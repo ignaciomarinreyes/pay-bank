@@ -4,6 +4,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 interface NavItem {
   readonly label: string;
   readonly path: string;
+  readonly icon: 'send' | 'list';
 }
 
 @Component({
@@ -14,5 +15,8 @@ interface NavItem {
 })
 export class SidebarComponent {
   // One entry per feature route
-  protected readonly navItems: readonly NavItem[] = [{ label: 'Movimientos', path: '/movements' }];
+  protected readonly navItems: readonly NavItem[] = [
+    { label: 'Nuevo pago', path: '/payments/new', icon: 'send' },
+    { label: 'Movimientos', path: '/movements', icon: 'list' },
+  ];
 }

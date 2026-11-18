@@ -1,11 +1,46 @@
-<nav class="sidebar">
-  <ul class="sidebar__list">
-    @for (item of navItems; track item.path) {
-      <li>
-        <a class="sidebar__link" [routerLink]="item.path" routerLinkActive="sidebar__link--active">
-          {{ item.label }}
-        </a>
-      </li>
-    }
-  </ul>
-</nav>
+<aside class="sidebar">
+  <div class="sidebar__brand">
+    <span class="sidebar__logo" aria-hidden="true">P</span>
+    <span class="sidebar__name">Pay Bank</span>
+  </div>
+
+  <nav aria-label="Principal">
+    <ul class="sidebar__list">
+      @for (item of navItems; track item.path) {
+        <li>
+          <a
+            class="sidebar__link"
+            [routerLink]="item.path"
+            routerLinkActive="sidebar__link--active"
+            ariaCurrentWhenActive="page"
+          >
+            <svg
+              class="sidebar__icon"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              @switch (item.icon) {
+                @case ('send') {
+                  <path d="M22 2 11 13" />
+                  <path d="M22 2 15 22l-4-9-9-4 20-7z" />
+                }
+                @case ('list') {
+                  <path d="M8 6h13M8 12h13M8 18h13" />
+                  <path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01" />
+                }
+              }
+            </svg>
+            {{ item.label }}
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
+</aside>

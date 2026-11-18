@@ -1,46 +1,72 @@
 <app-page-title title="Movimientos" />
 
-@let s = state();
-@if (s.status === 'loading') {
-  <p class="movements__message">Cargando movimientos…</p>
-} @else if (s.status === 'error') {
-  <p class="movements__message movements__message--error" role="alert">
-    No se han podido cargar los movimientos. Inténtalo de nuevo más tarde.
-  </p>
-} @else if (s.data.totalElements === 0) {
-  <p class="movements__message">No hay movimientos</p>
-} @else {
-  <div class="movements__table-wrapper">
-    <table class="movements__table">
-      <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>Tipo</th>
-          <th>Contraparte</th>
-          <th>Concepto</th>
-          <th class="movements__number">Importe</th>
-          <th class="movements__number">Saldo</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (movement of s.data.content; track movement.id) {
+<section class="card movements" aria-label="Lista de movimientos">
+  @let s = state();
+  @if (s.status === 'loading') {
+    <p class="movements__message">Cargando movimientos…</p>
+  } @else if (s.status === 'error') {
+    <p class="alert" role="alert">
+      No se han podido cargar los movimientos. Inténtalo de nuevo más tarde.
+    </p>
+  } @else if (s.data.totalElements === 0) {
+    <p class="movements__message">No hay movimientos</p>
+  } @else {
+    <div class="movements__table-wrapper">
+      <table class="movements__table">
+        <thead>
           <tr>
-            <td>{{ movement.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
-            <td>{{ movement.type === 'CHARGE' ? 'Cargo' : 'Abono' }}</td>
-            <td>{{ movement.counterpartyAlias }}</td>
-            <td>{{ movement.concept || '—' }}</td>
-            <td
-              class="movements__number"
-              [class.movements__amount--charge]="movement.type === 'CHARGE'"
-              [class.movements__amount--credit]="movement.type === 'CREDIT'"
-            >
-              {{ movement.amount | appAmount: true }}
-            </td>
-            <td class="movements__number">{{ movement.balanceAfter | appAmount }}</td>
+            <th scope="col">Fecha</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Contraparte</th>
+            <th scope="col">Concepto</th>
+            <th scope="col" class="movements__number">Importe</th>
+            <th scope="col" class="movements__number">Saldo</th>
           </tr>
-        }
-      </tbody>
-    </table>
-  </div>
-  <app-paginator [page]="currentPage()" [totalPages]="s.data.totalPages" (pageChange)="goTo($event)" />
-}
+        </thead>
+        <tbody>
+          @for (movement of s.data.content; track movement.id) {
+            @let credit = movement.type === 'CREDIT';
+            <tr>
+              <td class="movements__date">{{ movement.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td>
+                <span class="movements__type">
+                  <span class="movements__type-icon" [class.movements__type-icon--credit]="credit" aria-hidden="true">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      @if (credit) {
+                        <path d="M17 7 7 17" />
+                        <path d="M17 17H7V7" />
+                      } @else {
+                        <path d="M7 17 17 7" />
+                        <path d="M7 7h10v10" />
+                      }
+                    </svg>
+                  </span>
+                  {{ credit ? 'Abono' : 'Cargo' }}
+                </span>
+              </td>
+              <td class="movements__counterparty">{{ movement.counterpartyAlias }}</td>
+              <td class="movements__concept">{{ movement.concept || '—' }}</td>
+              <td
+                class="movements__number movements__amount"
+                [class.movements__amount--credit]="credit"
+              >
+                {{ movement.amount | appAmount: true }}
+              </td>
+              <td class="movements__number movements__balance">{{ movement.balanceAfter | appAmount }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <app-paginator [page]="currentPage()" [totalPages]="s.data.totalPages" (pageChange)="goTo($event)" />
+  }
+</section>

@@ -1,8 +1,10 @@
 <div class="shell">
-  <app-header class="shell__header" />
   <app-sidebar class="shell__sidebar" />
-  <main class="shell__content">
-    <router-outlet />
-  </main>
-  <app-footer class="shell__footer" />
+  <div class="shell__main">
+    <app-header class="shell__header" />
+    <main class="shell__content">
+      <router-outlet />
+    </main>
+    <app-footer class="shell__footer" />
+  </div>
 </div>

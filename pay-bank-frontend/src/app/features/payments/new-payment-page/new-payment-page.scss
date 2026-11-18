@@ -1,0 +1,109 @@
+.payment {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-lg);
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-xl);
+  }
+
+  &__heading {
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13.75rem, 1fr));
+    gap: var(--space-lg);
+  }
+
+  &__amount {
+    display: flex;
+    align-items: center;
+    height: 3.5rem;
+    padding: 0 var(--space-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-control-border);
+    border-radius: var(--radius-sm);
+
+    &:focus-within {
+      outline: 2px solid var(--color-brand);
+      outline-offset: 2px;
+    }
+
+    .field--invalid & {
+      border-color: var(--color-danger);
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      padding: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: transparent;
+      border: 0;
+      outline: none;
+    }
+  }
+
+  &__currency {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-md);
+
+    .btn {
+      min-height: 3.25rem;
+      padding: 0 var(--space-xl);
+    }
+  }
+
+  &__balance {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  &__balance-label {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  &__balance-amount {
+    font-size: 1.75rem;
+    line-height: 2rem;
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 900px) {
+  .payment {
+    grid-template-columns: 1fr;
+
+    // Balance first on narrow screens, above the form
+    &__balance {
+      order: -1;
+    }
+
+    &__form {
+      padding: var(--space-lg);
+    }
+  }
+}

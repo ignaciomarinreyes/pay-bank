@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { SidebarComponent } from './sidebar';
 
 describe('SidebarComponent', () => {
-  it('has a "Movimientos" link to /movements', async () => {
+  it('has the "Nuevo pago" and "Movimientos" links, in that order', async () => {
     await TestBed.configureTestingModule({
       imports: [SidebarComponent],
       providers: [provideRouter([])],
@@ -11,8 +11,8 @@ describe('SidebarComponent', () => {
     const fixture = TestBed.createComponent(SidebarComponent);
     await fixture.whenStable();
 
-    const link = (fixture.nativeElement as HTMLElement).querySelector('a')!;
-    expect(link.textContent?.trim()).toBe('Movimientos');
-    expect(link.getAttribute('href')).toBe('/movements');
+    const links = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('a'));
+    expect(links.map((l) => l.textContent?.trim())).toEqual(['Nuevo pago', 'Movimientos']);
+    expect(links.map((l) => l.getAttribute('href'))).toEqual(['/payments/new', '/movements']);
   });
 });

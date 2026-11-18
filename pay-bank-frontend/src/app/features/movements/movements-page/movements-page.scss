@@ -1,51 +1,98 @@
 .movements {
   &__message {
     margin: 0;
+    padding: var(--space-lg) 0;
+    text-align: center;
     color: var(--color-text-muted);
-
-    &--error {
-      color: var(--color-danger);
-    }
   }
 
   &__table-wrapper {
     overflow-x: auto;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
   }
 
   &__table {
     width: 100%;
+    min-width: 45rem;
     border-collapse: collapse;
 
     th,
     td {
-      padding: var(--space-sm) var(--space-md);
+      padding: var(--space-md) var(--space-md) var(--space-md) 0;
       text-align: left;
       white-space: nowrap;
-      border-bottom: 1px solid var(--color-border);
+    }
+
+    th:last-child,
+    td:last-child {
+      padding-right: 0;
     }
 
     th {
+      padding-block: var(--space-sm);
+      font-size: 0.75rem;
+      line-height: 1rem;
       font-weight: 600;
       color: var(--color-text-muted);
     }
 
-    tbody tr:last-child td {
-      border-bottom: 0;
+    tbody tr {
+      border-top: 1px solid var(--color-border);
     }
   }
 
-  &__number {
+  &__date {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  &__type {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+  }
+
+  &__type-icon {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    color: var(--color-text);
+    background: var(--color-background);
+    border-radius: var(--radius-pill);
+
+    &--credit {
+      color: var(--color-success);
+    }
+  }
+
+  &__counterparty {
+    font-weight: 600;
+  }
+
+  &__concept {
+    max-width: 18rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  &__table &__number {
     text-align: right;
   }
 
-  &__amount--charge {
-    color: var(--color-danger);
+  &__amount {
+    font-weight: 700;
+
+    &--credit {
+      color: var(--color-success);
+    }
   }
 
-  &__amount--credit {
-    color: var(--color-success);
+  &__balance {
+    color: var(--color-text-muted);
   }
 }

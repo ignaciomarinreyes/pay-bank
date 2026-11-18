@@ -19,6 +19,10 @@ export const routes: Routes = [
         path: 'movements',
         loadChildren: () => import('./features/movements/movements.routes').then((m) => m.MOVEMENTS_ROUTES),
       },
+      {
+        path: 'payments',
+        loadChildren: () => import('./features/payments/payments.routes').then((m) => m.PAYMENTS_ROUTES),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

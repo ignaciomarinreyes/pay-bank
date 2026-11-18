@@ -1,21 +1,27 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: var(--header-height);
-  padding: 0 var(--space-lg);
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-
-  &__brand {
-    font-size: 1.25rem;
-    font-weight: 700;
-  }
+  justify-content: flex-end;
+  min-height: 5rem;
+  padding-block: var(--space-md);
 
   &__user {
     display: flex;
     align-items: center;
-    gap: var(--space-md);
+    gap: 0.75rem;
+  }
+
+  &__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-brand-strong);
+    background: var(--color-brand-tint);
+    border-radius: var(--radius-pill);
   }
 
   &__alias {
@@ -23,16 +29,9 @@
   }
 
   &__logout {
-    padding: var(--space-xs) var(--space-md);
-    font: inherit;
-    color: var(--color-on-primary);
-    background: transparent;
-    border: 1px solid var(--color-on-primary);
-    border-radius: var(--radius-md);
-    cursor: pointer;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.15);
-    }
+    min-height: 2.75rem;
+    margin-left: var(--space-sm);
+    padding: 0 var(--space-md);
+    font-size: 0.875rem;
   }
 }

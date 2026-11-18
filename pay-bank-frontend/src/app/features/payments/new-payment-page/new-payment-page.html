@@ -1,0 +1,95 @@
+<app-page-title title="Nuevo pago" />
+
+<div class="payment">
+  <form class="card payment__form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <h2 class="payment__heading">¿A quién envías dinero?</h2>
+
+    @let recipient = form.controls.recipientAlias;
+    <div class="field" [class.field--invalid]="recipient.touched && recipient.invalid">
+      <label for="recipientAlias">Destinatario</label>
+      <input
+        id="recipientAlias"
+        name="recipientAlias"
+        type="text"
+        formControlName="recipientAlias"
+        autocomplete="off"
+        placeholder="Alias del usuario"
+      />
+      @if (recipient.touched && recipient.hasError('required')) {
+        <span class="field__error">El destinatario es obligatorio</span>
+      }
+    </div>
+
+    <div class="payment__row">
+      @let amount = form.controls.amount;
+      <div class="field" [class.field--invalid]="amount.touched && amount.invalid">
+        <label for="amount">Importe (€)</label>
+        <div class="payment__amount">
+          <input
+            id="amount"
+            name="amount"
+            type="text"
+            inputmode="decimal"
+            formControlName="amount"
+            autocomplete="off"
+            placeholder="0,00"
+          />
+          <span class="payment__currency" aria-hidden="true">€</span>
+        </div>
+        @if (amount.touched && amount.hasError('required')) {
+          <span class="field__error">El importe es obligatorio</span>
+        } @else if (amount.touched && amount.hasError('amount')) {
+          <span class="field__error">Introduce un importe mayor que 0 con un máximo de 2 decimales</span>
+        }
+      </div>
+
+      @let concept = form.controls.concept;
+      <div class="field" [class.field--invalid]="concept.invalid">
+        <label for="concept">Concepto (opcional)</label>
+        <input
+          id="concept"
+          name="concept"
+          type="text"
+          formControlName="concept"
+          autocomplete="off"
+          placeholder="Ej.: Cena del viernes"
+        />
+        @if (concept.hasError('maxlength')) {
+          <span class="field__error">El concepto no puede superar los {{ conceptMaxLength }} caracteres</span>
+        } @else {
+          <span class="field__hint">Lo verá la persona que lo recibe.</span>
+        }
+      </div>
+    </div>
+
+    @if (serverError(); as message) {
+      <p class="alert" role="alert">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 8v5M12 16h.01" />
+        </svg>
+        {{ message }}
+      </p>
+    }
+
+    <div class="payment__actions">
+      <button class="btn btn--primary" type="submit" [disabled]="submitting()">Pagar</button>
+    </div>
+  </form>
+
+  @if (balance() !== null) {
+    <aside class="card payment__balance" aria-label="Resumen de la cuenta">
+      <span class="payment__balance-label">Saldo disponible<span class="visually-hidden">: </span></span>
+      <span class="payment__balance-amount">{{ balance() | appAmount }}</span>
+    </aside>
+  }
+</div>
