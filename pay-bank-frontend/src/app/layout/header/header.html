@@ -1,3 +1,9 @@
 <header class="header">
   <span class="header__brand">Pay Bank</span>
+  @if (currentUser(); as alias) {
+    <div class="header__user">
+      <span class="header__alias">{{ alias }}</span>
+      <button class="header__logout" type="button" (click)="logout()">Cerrar sesión</button>
+    </div>
+  }
 </header>

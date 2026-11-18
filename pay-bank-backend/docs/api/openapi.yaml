@@ -15,8 +15,141 @@ tags:
     description: Account, balance and movements
   - name: Payments
     description: Payments between users
-paths: {}
+paths:
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      operationId: login
+      summary: Log in with alias and password
+      description: >
+        Opens a session. Returns the access token in the body and sets the refresh token
+        in an HttpOnly cookie (refresh_token).
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Session opened
+          headers:
+            Set-Cookie:
+              description: refresh_token cookie (HttpOnly, SameSite=Strict, Path=/api/auth)
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/auth/refresh:
+    post:
+      tags: [Auth]
+      operationId: refresh
+      summary: Renew the session
+      description: >
+        Uses the refresh_token cookie (single use) to issue a new access token and a new refresh token.
+      security: []
+      parameters:
+        - name: refresh_token
+          in: cookie
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Session renewed
+          headers:
+            Set-Cookie:
+              description: New refresh_token cookie
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/auth/logout:
+    post:
+      tags: [Auth]
+      operationId: logout
+      summary: Close the session
+      description: Invalidates the refresh token on the server and clears the cookie. Idempotent.
+      security: []
+      parameters:
+        - name: refresh_token
+          in: cookie
+          required: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Session closed
+          headers:
+            Set-Cookie:
+              description: Cookie deletion (Max-Age=0)
+              schema:
+                type: string
 components:
+  schemas:
+    LoginRequest:
+      type: object
+      required: [alias, password]
+      properties:
+        alias:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+    AuthResponse:
+      type: object
+      required: [accessToken, tokenType, expiresIn, alias]
+      properties:
+        accessToken:
+          type: string
+        tokenType:
+          type: string
+          example: Bearer
+        expiresIn:
+          type: integer
+          format: int64
+          description: Access token lifetime in seconds
+          example: 900
+        alias:
+          type: string
+    ProblemDetail:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+  responses:
+    BadRequest:
+      description: Validation error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    Unauthorized:
+      description: Not authenticated or invalid credentials
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
   securitySchemes:
     bearerAuth:
       type: http

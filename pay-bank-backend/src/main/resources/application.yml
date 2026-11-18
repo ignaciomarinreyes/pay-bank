@@ -11,6 +11,10 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: update
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
 
 server:
   port: 8080
@@ -20,3 +24,14 @@ springdoc:
     path: /swagger-ui.html
   api-docs:
     path: /v3/api-docs
+
+jwt:
+  access-token-ttl: 15m
+  refresh-token-ttl: 7d
+
+auth:
+  refresh-cookie:
+    secure: true
+
+cors:
+  allowed-origins: http://localhost:4200
