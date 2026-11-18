@@ -1,0 +1,39 @@
+/* Global styles and design tokens (CSS custom properties) */
+:root {
+  --color-primary: #1f4e8c;
+  --color-on-primary: #ffffff;
+  --color-background: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-border: #dde3ea;
+  --color-hover: #eef2f7;
+  --color-text: #1b2430;
+  --color-text-muted: #5f6b7a;
+  --color-success: #1e7d45;
+  --color-danger: #b42318;
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
+  --radius-md: 0.5rem;
+  --header-height: 3.5rem;
+  --sidebar-width: 14rem;
+
+  --font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background: var(--color-background);
+}

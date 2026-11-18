@@ -1,0 +1,11 @@
+<nav class="sidebar">
+  <ul class="sidebar__list">
+    @for (item of navItems; track item.path) {
+      <li>
+        <a class="sidebar__link" [routerLink]="item.path" routerLinkActive="sidebar__link--active">
+          {{ item.label }}
+        </a>
+      </li>
+    }
+  </ul>
+</nav>

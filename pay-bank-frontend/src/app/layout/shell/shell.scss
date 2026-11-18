@@ -1,0 +1,38 @@
+.shell {
+  display: grid;
+  grid-template-areas:
+    'header header'
+    'sidebar content'
+    'footer footer';
+  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+
+  &__header {
+    grid-area: header;
+  }
+
+  &__sidebar {
+    grid-area: sidebar;
+  }
+
+  &__content {
+    grid-area: content;
+    padding: var(--space-lg);
+  }
+
+  &__footer {
+    grid-area: footer;
+  }
+}
+
+@media (max-width: 768px) {
+  .shell {
+    grid-template-areas:
+      'header'
+      'sidebar'
+      'content'
+      'footer';
+    grid-template-columns: 1fr;
+  }
+}

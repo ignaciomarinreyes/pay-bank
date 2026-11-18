@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  align-items: center;
+  height: var(--header-height);
+  padding: 0 var(--space-lg);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+
+  &__brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+}
