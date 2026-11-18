@@ -27,7 +27,7 @@ User (1) ----> (1) Account (1) ----> (N) Movement
 
 - Un **Payment** tiene siempre una cuenta de origen y una cuenta de destino distintas.
 - Cada pago genera dos **Movement**: un cargo en la cuenta de origen y un abono en la cuenta de destino.
-- El **saldo** de una **Account** refleja la suma de sus movimientos.
+- El **saldo** de una **Account** es su saldo inicial más la suma de sus movimientos.
 
 ## Stack tecnológico
 

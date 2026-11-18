@@ -14,7 +14,12 @@ export const routes: Routes = [
     canActivateChild: [authGuard],
     loadComponent: () => import('./layout/shell/shell').then((m) => m.ShellComponent),
     // Feature routes (lazy loaded from features/) are registered here
-    children: [],
+    children: [
+      {
+        path: 'movements',
+        loadChildren: () => import('./features/movements/movements.routes').then((m) => m.MOVEMENTS_ROUTES),
+      },
+    ],
   },
   { path: '**', redirectTo: '' },
 ];

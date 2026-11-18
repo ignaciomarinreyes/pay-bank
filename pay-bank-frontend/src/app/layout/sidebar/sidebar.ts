@@ -14,5 +14,5 @@ interface NavItem {
 })
 export class SidebarComponent {
   // One entry per feature route
-  protected readonly navItems: readonly NavItem[] = [];
+  protected readonly navItems: readonly NavItem[] = [{ label: 'Movimientos', path: '/movements' }];
 }

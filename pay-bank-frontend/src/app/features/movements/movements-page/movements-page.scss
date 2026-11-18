@@ -1,0 +1,51 @@
+.movements {
+  &__message {
+    margin: 0;
+    color: var(--color-text-muted);
+
+    &--error {
+      color: var(--color-danger);
+    }
+  }
+
+  &__table-wrapper {
+    overflow-x: auto;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: var(--space-sm) var(--space-md);
+      text-align: left;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    th {
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+  }
+
+  &__number {
+    text-align: right;
+  }
+
+  &__amount--charge {
+    color: var(--color-danger);
+  }
+
+  &__amount--credit {
+    color: var(--color-success);
+  }
+}
