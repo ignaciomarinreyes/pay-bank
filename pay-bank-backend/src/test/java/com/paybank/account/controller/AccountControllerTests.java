@@ -83,6 +83,24 @@ class AccountControllerTests {
         return get(uri).header(HttpHeaders.AUTHORIZATION, "Bearer " + token(alias, alias + "-pass"));
     }
 
+    // CA-02
+    @Test
+    void accountEndpointReturnsTheBalanceOfTheCurrentUser() throws Exception {
+        mvc.perform(as("ana", "/api/accounts/me"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.balance").value(1000.00));
+        mvc.perform(get("/api/accounts/me")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void accountEndpointFailsForAUserWithoutAccount() throws Exception {
+        accounts.deleteById(luis.getId());
+
+        mvc.perform(as("luis", "/api/accounts/me"))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.code").value("ACCOUNT_NOT_FOUND"));
+    }
+
     // CA-14
     @Test
     void requiresAuthentication() throws Exception {

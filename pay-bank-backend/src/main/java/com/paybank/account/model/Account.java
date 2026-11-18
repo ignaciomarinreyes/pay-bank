@@ -37,6 +37,15 @@ public class Account {
         this.balance = balance;
     }
 
+    /** Subtracts the amount from the balance. The caller checks that the balance is enough. */
+    public void debit(BigDecimal amount) {
+        this.balance = balance.subtract(amount);
+    }
+
+    public void credit(BigDecimal amount) {
+        this.balance = balance.add(amount);
+    }
+
     public Long getId() {
         return id;
     }

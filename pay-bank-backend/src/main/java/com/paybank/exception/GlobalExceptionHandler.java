@@ -3,6 +3,7 @@ package com.paybank.exception;
 import java.util.stream.Collectors;
 
 import com.paybank.common.web.InvalidPageQueryException;
+import com.paybank.payment.exception.InvalidPaymentAmountException;
 import com.paybank.security.RefreshCookieFactory;
 import com.paybank.user.exception.InvalidCredentialsException;
 import com.paybank.user.exception.InvalidRefreshTokenException;
@@ -20,26 +21,39 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    public static final String VALIDATION_ERROR = "VALIDATION_ERROR";
+
     private final RefreshCookieFactory cookies;
 
     public GlobalExceptionHandler(RefreshCookieFactory cookies) {
         this.cookies = cookies;
     }
 
+    private static ProblemDetail problem(HttpStatus status, String title, String detail, String code) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(status, detail);
+        problem.setTitle(title);
+        if (code != null) {
+            problem.setProperty("code", code);
+        }
+        return problem;
+    }
+
     @ExceptionHandler(InvalidCredentialsException.class)
     public ProblemDetail handleInvalidCredentials(InvalidCredentialsException e) {
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, e.getMessage());
-        problem.setTitle("Invalid credentials");
-        return problem;
+        return problem(HttpStatus.UNAUTHORIZED, "Invalid credentials", e.getMessage(), null);
     }
 
     @ExceptionHandler(InvalidRefreshTokenException.class)
     public ResponseEntity<ProblemDetail> handleInvalidRefreshToken(InvalidRefreshTokenException e) {
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, e.getMessage());
-        problem.setTitle("Invalid refresh token");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .header(HttpHeaders.SET_COOKIE, cookies.clear().toString())
-                .body(problem);
+                .body(problem(HttpStatus.UNAUTHORIZED, "Invalid refresh token", e.getMessage(), null));
+    }
+
+    /** Business rules (recipient not found, self payment, insufficient balance...) answer 422 with a code. */
+    @ExceptionHandler(BusinessRuleException.class)
+    public ProblemDetail handleBusinessRule(BusinessRuleException e) {
+        return problem(HttpStatus.UNPROCESSABLE_ENTITY, "Business rule violated", e.getMessage(), e.getCode());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -47,9 +61,7 @@ public class GlobalExceptionHandler {
         String detail = e.getBindingResult().getFieldErrors().stream()
                 .map(f -> f.getField() + ": " + f.getDefaultMessage())
                 .collect(Collectors.joining("; "));
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detail);
-        problem.setTitle("Validation error");
-        return problem;
+        return problem(HttpStatus.BAD_REQUEST, "Validation error", detail, VALIDATION_ERROR);
     }
 
     /** Out-of-range pagination parameters (PageQuery or the constraints of the generated API). */
@@ -57,15 +69,16 @@ public class GlobalExceptionHandler {
             ConstraintViolationException.class})
     public ProblemDetail handleInvalidParameters(Exception e) {
         String detail = e instanceof InvalidPageQueryException ? e.getMessage() : "Invalid request parameters";
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detail);
-        problem.setTitle("Validation error");
-        return problem;
+        return problem(HttpStatus.BAD_REQUEST, "Validation error", detail, VALIDATION_ERROR);
+    }
+
+    @ExceptionHandler(InvalidPaymentAmountException.class)
+    public ProblemDetail handleInvalidAmount(InvalidPaymentAmountException e) {
+        return problem(HttpStatus.BAD_REQUEST, "Validation error", e.getMessage(), VALIDATION_ERROR);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail handleUnreadable(HttpMessageNotReadableException e) {
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Malformed request body");
-        problem.setTitle("Bad request");
-        return problem;
+        return problem(HttpStatus.BAD_REQUEST, "Bad request", "Malformed request body", VALIDATION_ERROR);
     }
 }

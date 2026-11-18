@@ -96,6 +96,23 @@ paths:
               description: Cookie deletion (Max-Age=0)
               schema:
                 type: string
+  /api/accounts/me:
+    get:
+      tags: [Accounts]
+      operationId: getMyAccount
+      summary: Get the current user's account
+      description: Available balance of the authenticated user's account.
+      responses:
+        '200':
+          description: The account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
   /api/accounts/me/movements:
     get:
       tags: [Accounts]
@@ -133,6 +150,33 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+  /api/payments:
+    post:
+      tags: [Payments]
+      operationId: createPayment
+      summary: Make a payment to another user
+      description: >
+        Pays an amount from the authenticated user's account to the account of the user with the
+        given alias. Creates a charge in the origin account and a credit in the destination account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentRequest'
+      responses:
+        '201':
+          description: Payment made
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
 components:
   schemas:
     LoginRequest:
@@ -207,9 +251,62 @@ components:
           format: int64
         totalPages:
           type: integer
+    AccountResponse:
+      type: object
+      required: [balance]
+      properties:
+        balance:
+          type: number
+          description: Available balance in euros, 2 decimals
+          example: 1015.00
+    CreatePaymentRequest:
+      type: object
+      required: [recipientAlias, amount]
+      properties:
+        recipientAlias:
+          type: string
+          minLength: 1
+          description: Alias of the recipient (case-insensitive)
+        amount:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+          description: Amount in euros, greater than 0 and with at most 2 decimals
+          example: 12.50
+        concept:
+          type: string
+          nullable: true
+          maxLength: 140
+    PaymentResponse:
+      type: object
+      required: [id, recipientAlias, amount, concept, createdAt, balanceAfter]
+      properties:
+        id:
+          type: integer
+          format: int64
+        recipientAlias:
+          type: string
+        amount:
+          type: number
+          description: Amount paid (positive), 2 decimals
+        concept:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Moment of the payment (UTC)
+        balanceAfter:
+          type: number
+          description: Balance of the payer's account after the payment, 2 decimals
     ProblemDetail:
       type: object
       properties:
+        code:
+          type: string
+          description: >
+            Stable error code: VALIDATION_ERROR, RECIPIENT_NOT_FOUND, SELF_PAYMENT,
+            INSUFFICIENT_BALANCE or ACCOUNT_NOT_FOUND
         type:
           type: string
         title:
@@ -223,6 +320,12 @@ components:
   responses:
     BadRequest:
       description: Validation error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    UnprocessableEntity:
+      description: Business rule violated (see the code of the problem detail)
       content:
         application/problem+json:
           schema:
