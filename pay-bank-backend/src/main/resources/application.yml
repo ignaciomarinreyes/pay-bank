@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: pay-bank-backend
+  config:
+    # Local secrets (datasource password, jwt.secret). Git-ignored, see docs/constitution.md
+    import: optional:file:./secret-local.yml
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pay_bank
+    username: pay_bank
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8080
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs

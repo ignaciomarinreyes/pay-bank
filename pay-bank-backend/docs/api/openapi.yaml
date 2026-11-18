@@ -1,0 +1,26 @@
+openapi: 3.0.3
+info:
+  title: Pay Bank API
+  description: Payments API that allows users to send payments and check their account, movements and balance.
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+    description: Local environment
+tags:
+  - name: Auth
+    description: Authentication
+  - name: Users
+    description: Users
+  - name: Accounts
+    description: Account, balance and movements
+  - name: Payments
+    description: Payments between users
+paths: {}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

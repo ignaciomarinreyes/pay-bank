@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:17
+    container_name: pay-bank-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-pay_bank}
+      POSTGRES_USER: ${POSTGRES_USER:-pay_bank}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pay_bank_password}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pay_bank} -d ${POSTGRES_DB:-pay_bank}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

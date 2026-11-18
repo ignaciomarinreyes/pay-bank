@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: pay-bank-backend-test
+  datasource:
+    url: jdbc:hsqldb:mem:paybank;sql.syntax_pgs=true
+    username: sa
+    password:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+
+jwt:
+  secret: "test-secret-with-at-least-32-characters!!"

@@ -1,0 +1,21 @@
+# Build
+target/
+
+# Local secrets
+secret-local.yml
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
