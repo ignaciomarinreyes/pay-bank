@@ -65,7 +65,7 @@ Cada especificación tiene como máximo un `plan.md` vigente **por proyecto**.
 
 ## Paso 4 · Analizar el código y el contexto técnico
 
-Si existe `docs/constitucion.md` en la raíz, léelo y respeta sus principios y restricciones técnicas.
+Si existe `docs/constitution.md` en el proyecto afectado (p. ej. `pay-bank-backend/docs/constitution.md`), léelo y respeta sus principios y restricciones técnicas.
 
 Antes de redactar, investiga el proyecto (o proyectos, si la spec es global) afectado:
 - Stack, estructura de módulos/paquetes, convenciones y patrones existentes, tests actuales.

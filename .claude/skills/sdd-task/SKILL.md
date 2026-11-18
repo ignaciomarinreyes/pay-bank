@@ -31,7 +31,7 @@ Reglas del flujo:
 - Comprueba que existen **`spec.md` y el `plan.md`** de cada proyecto para el que se van a generar tareas:
   - Si falta `spec.md`, no continúes: indica que debe crearse con `/sdd-spec`.
   - Si falta el `plan.md` de un proyecto, no generes las tareas de ese proyecto: indica que debe crearse con `/sdd-plan`.
-- Si existe `docs/constitucion.md` en la raíz, léelo y respeta sus principios.
+- Si existe `docs/constitution.md` en el proyecto afectado (p. ej. `pay-bank-backend/docs/constitution.md`), léelo y respeta sus principios.
 - Lee ambos ficheros completos. Comprueba que estén cerrados (sin `[PENDIENTE: …]`, preguntas ni decisiones abiertas) y que el plan sea coherente con la spec (referencia identificadores existentes y cubre los RF/RN). Si no es así, informa al usuario y no continúes hasta que se resuelva en la fase correspondiente.
 
 ## Paso 2 · Determinar la ubicación (el ámbito lo fija la spec)

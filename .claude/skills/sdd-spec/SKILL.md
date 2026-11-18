@@ -28,7 +28,7 @@ Reglas del flujo:
 
 Lee la petición del usuario y reúne el contexto necesario:
 - Revisa el repositorio para conocer los proyectos existentes (carpetas con `pom.xml`, `package.json`, `build.gradle`, etc.) y sus carpetas `docs/`.
-- Si existe `docs/constitucion.md` en la raíz, léelo y respeta sus principios.
+- Si existe `docs/constitution.md` en el proyecto afectado (p. ej. `pay-bank-backend/docs/constitution.md`), léelo y respeta sus principios.
 - Lee especificaciones existentes relacionadas para mantener coherencia de términos y no contradecirlas.
 
 ## Paso 2 · Determinar el ámbito (global o de proyecto)
@@ -43,11 +43,11 @@ Ejemplo:
 ```
 /
 ├── docs/
-│   ├── constitucion.md
 │   └── 001-registro-usuarios/         # spec global: backend y frontend
 │       └── spec.md
 ├── backend/
 │   └── docs/
+│       ├── constitution.md            # principios y restricciones técnicas del backend
 │       ├── 001-registro-usuarios/     # plan y tareas del backend para la spec global
 │       │   ├── plan.md
 │       │   └── task.md
@@ -57,6 +57,7 @@ Ejemplo:
 │           └── task.md
 └── frontend/
     └── docs/
+        ├── constitution.md            # principios y restricciones técnicas del frontend
         └── 001-registro-usuarios/     # plan y tareas del frontend para la spec global
             ├── plan.md
             └── task.md
