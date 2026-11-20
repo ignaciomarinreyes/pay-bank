@@ -1,8 +1,8 @@
 # Build
 target/
 
-# Local secrets
-secret-local.yml
+# Local secrets (En entornos productivos se debe de ignorar y no subir al repositorio, como es una práctica con un uso didáctico se subió)
+#secret-local.yml 
 
 # IDE
 .idea/
