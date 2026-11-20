@@ -2,6 +2,8 @@
 
 Aplicación de pagos que permite a un usuario realizar pagos a otros usuarios y consultar su saldo, sus movimientos y los pagos realizados y recibidos.
 
+> 🎬 **Vídeo demostración:** [cómo funciona la aplicación y cómo se aplica la metodología SDD](https://youtu.be/LJ3_igzqZ_Q)
+
 El repositorio contiene dos proyectos:
 
 | Proyecto | Tecnología | Puerto |
